@@ -5,4 +5,5 @@ const initialState = {
     isAuth: false,
     token: null,
 }
+
 export const authStore = createStore(authReducer, initialState)
