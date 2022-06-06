@@ -3,31 +3,22 @@ import { messagesStore } from "../stores/messages_store.js";
 import updateMsgAction from "../actions/messages_actions.js";
 
 const apiToken = "5380832524:AAGllo9zZHV2jE1viG6HjFOR1g9tBGza0ys";
-
 const urlBase = "https://api.telegram.org/bot";
 // const CHAT_ID = 520728880;
 
 export function MessagesView(MAIN) {
-  // const users = JSON.parse(localStorage.getItem("users") || "{}");
   const url = `${urlBase}${apiToken}/getUpdates`;
 
   function render(message) {
-    console.log(message);
     const messagesStr = templateMessages(message);
     const a = `${getTableHead()}${messagesStr}${getTableEnd()}`;
-    return MAIN.insertAdjacentHTML("afterbegin", a);
+    return (MAIN.innerHTML = a);
   }
 
   function getUpdate(url) {
     return fetch(url)
       .then((d) => d.json())
-      .then((data) => {
-        data.result.forEach((upd) => {
-          upd.message = upd.message || upd.edited_message;
-        });
-
-        return data;
-      });
+      .then((data) => data);
   }
 
   getUpdate(url).then((r) => {
@@ -36,6 +27,8 @@ export function MessagesView(MAIN) {
     });
     messagesStore.getState();
     const a = messagesStore.getState();
-    a.forEach((el) => render(el));
+    a.forEach((el) => {
+      render(el);
+    });
   });
 }
