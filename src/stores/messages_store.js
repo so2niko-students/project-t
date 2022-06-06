@@ -7,21 +7,16 @@
 
 import createStore from "../../flux.js";
 
-const initState = [
-  //? может не оборачивать в массив
-  {
-    time: null,
-    userName: null,
-    text: "",
-  },
-];
-
+const initState = {
+  time: null,
+  userName: null,
+  text: "",
+};
 const messagesReducer = (state = initState, action) => {
   switch (action.type) {
     case "update_message":
       return (state = [
         {
-          //?может не массив должен быть?
           time: action.payload.time,
           userName: action.payload.userName,
           text: action.payload.text,
