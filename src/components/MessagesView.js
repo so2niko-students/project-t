@@ -4,15 +4,14 @@ import updateMsgAction from "../actions/messages_actions.js";
 
 const apiToken = "5380832524:AAGllo9zZHV2jE1viG6HjFOR1g9tBGza0ys";
 const urlBase = "https://api.telegram.org/bot";
-// const CHAT_ID = 520728880;
 
-export function MessagesView(MAIN) {
+export default function MessagesView(container) {
   const url = `${urlBase}${apiToken}/getUpdates`;
 
   function render(message) {
     const messagesStr = templateMessages(message);
     const a = `${getTableHead()}${messagesStr}${getTableEnd()}`;
-    return (MAIN.innerHTML = a);
+    return (container.innerHTML = a);
   }
 
   function getUpdate(url) {

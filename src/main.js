@@ -1,4 +1,4 @@
-import { MessagesView } from "./components/MessagesView.js";
+import MessagesView from "./components/MessagesView.js";
 
-const MAIN = document.querySelector(".main");
-MessagesView(MAIN);
+const messagesViewContainer = document.getElementById("messagesView");
+MessagesView(messagesViewContainer);
