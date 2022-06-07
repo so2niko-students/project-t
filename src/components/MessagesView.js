@@ -5,13 +5,13 @@ import updateMsgAction from "../actions/messages_actions.js";
 const apiToken = "5380832524:AAGllo9zZHV2jE1viG6HjFOR1g9tBGza0ys";
 const urlBase = "https://api.telegram.org/bot";
 
-export default function MessagesView(container) {
+export default function MessagesView(MAIN) {
   const url = `${urlBase}${apiToken}/getUpdates`;
 
   function render(message) {
     const messagesStr = templateMessages(message);
     const a = `${getTableHead()}${messagesStr}${getTableEnd()}`;
-    return (container.innerHTML = a);
+    return (MAIN.innerHTML = a);
   }
 
   function getUpdate(url) {
