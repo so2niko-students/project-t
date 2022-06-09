@@ -21,11 +21,14 @@ export default function MessagesView(MAIN) {
   }
 
   getUpdate(url).then((r) => {
-    r.result.forEach(({ message }) => {
-      messagesStore.dispatch(updateMsgAction(message));
+    r.result.forEach((allMessages) => {
+      messagesStore.dispatch(
+        updateMsgAction(allMessages.message || allMessages.edited_message)
+      );
     });
     messagesStore.getState();
     const a = messagesStore.getState();
+
     a.forEach((el) => {
       render(el);
     });
