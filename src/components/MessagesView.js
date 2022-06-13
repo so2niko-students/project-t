@@ -1,6 +1,6 @@
 import { templateMessages, getTableHead, getTableEnd } from "./MsgsTemplate.js";
 import { messagesStore } from "../stores/messages_store.js";
-import updateMsgAction from "../actions/messages_actions.js";
+import messageAction from "../actions/messages_actions.js";
 
 const apiToken = "5380832524:AAGllo9zZHV2jE1viG6HjFOR1g9tBGza0ys";
 const urlBase = "https://api.telegram.org/bot";
@@ -8,43 +8,36 @@ const urlBase = "https://api.telegram.org/bot";
 export default function MessagesView(MAIN) {
   const url = `${urlBase}${apiToken}/getUpdates`;
 
-  function render(message) {
-    console.log(message);
-    const messagesStr = templateMessages(message);
-    const a = `${getTableHead()}${messagesStr}${getTableEnd()}`;
-    return (MAIN.innerHTML = a);
+  function render(messages) {
+    const messagesStr = messages.map((message) => {
+      const time = new Date(message.message.date * 1000)
+        .toString()
+        .match(/\d{2}:\d{2}/)[0];
+      const userName = message.message.from.first_name;
+      const text = message.message.text;
+      return templateMessages(time, userName, text);
+    });
+
+    const table = `${getTableHead()}${messagesStr}${getTableEnd()}`;
+
+    MAIN.innerHTML = table;
   }
 
   function getUpdate(url) {
     return fetch(url)
       .then((d) => d.json())
       .then((data) => {
-        saveUsers(data);
-        return data;
+        if (data) {
+          return data.result;
+        } else {
+          return [];
+        }
       });
   }
 
   getUpdate(url).then((r) => {
-    // console.log(r.result);
-    const renderAll = r.result.map((obj) => obj.message);
-    render(renderAll);
-    r.result.forEach((allMessages) => {
-      messagesStore.dispatch(
-        updateMsgAction(allMessages.message || allMessages.edited_message)
-      );
-
-      messagesStore.getState();
-      const a = messagesStore.getState();
-      // console.log(a);
-
-      a.forEach((el) => {
-        render(el);
-      });
-    });
+    messagesStore.dispatch(messageAction(r));
+    const dataInStore = messagesStore.getState();
+    render(dataInStore);
   });
-
-  function saveUsers(userData) {
-    localStorage.setItem("users", JSON.stringify(userData));
-    //TODO complete with info inside
-  }
 }

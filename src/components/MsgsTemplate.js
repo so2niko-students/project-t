@@ -1,5 +1,5 @@
-export function templateMessages({ time, userName, text }) {
-  return `<tr>
+export function templateMessages(time, userName, text) {
+  return `<tr class="render-msg">
               <td>${time}</td>
               <td>${userName}</td>
               <td>${text}</td>
