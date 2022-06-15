@@ -9,12 +9,14 @@ export default function MessagesView(MAIN) {
   const url = `${urlBase}${apiToken}/getUpdates`;
 
   function render(messages) {
-    const messagesStr = messages.map((message) => {
-      const time = new Date(message.message.date * 1000)
+    const messagesStr = messages.map((msgObj) => {
+      console.log(msgObj);
+      msgObj = msgObj.message || msgObj.edited_message;
+      const time = new Date(msgObj.date * 1000)
         .toString()
         .match(/\d{2}:\d{2}/)[0];
-      const userName = message.message.from.first_name;
-      const text = message.message.text;
+      const userName = msgObj.from.first_name;
+      const text = msgObj.text;
       return templateMessages(time, userName, text);
     });
 
@@ -36,6 +38,7 @@ export default function MessagesView(MAIN) {
   }
 
   getUpdate(url).then((r) => {
+    console.log(r);
     messagesStore.dispatch(messageAction(r));
     const dataInStore = messagesStore.getState();
     render(dataInStore);
