@@ -10,7 +10,6 @@ export default function MessagesView(MAIN) {
 
   function render(messages) {
     const messagesStr = messages.map((msgObj) => {
-      console.log(msgObj);
       msgObj = msgObj.message || msgObj.edited_message;
       const time = new Date(msgObj.date * 1000)
         .toString()
@@ -38,9 +37,16 @@ export default function MessagesView(MAIN) {
   }
 
   getUpdate(url).then((r) => {
-    console.log(r);
     messagesStore.dispatch(messageAction(r));
     const dataInStore = messagesStore.getState();
-    render(dataInStore);
+    const idStock = []; //лежать айдишки сообщений, которые в стейте
+    dataInStore.map((el) => idStock.push(el.update_id));
+    setInterval(() => {
+      if (?? in idStock) { // должна быть одна новая айди? или массив? или может по-другому реализовать эту логику?
+        return;
+      } else {        
+        render(dataInStore);
+      }      
+    }, 3000);    
   });
 }
