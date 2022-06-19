@@ -36,17 +36,28 @@ export default function MessagesView(MAIN) {
       });
   }
 
-  getUpdate(url).then((r) => {
-    messagesStore.dispatch(messageAction(r));
-    const dataInStore = messagesStore.getState();
-    const idStock = []; //лежать айдишки сообщений, которые в стейте
-    dataInStore.map((el) => idStock.push(el.update_id));
-    setInterval(() => {
-      if (?? in idStock) { // должна быть одна новая айди? или массив? или может по-другому реализовать эту логику?
-        return;
-      } else {        
-        render(dataInStore);
-      }      
-    }, 3000);    
-  });
+  setInterval(() => {
+    getUpdate(url).then((res) => {
+      const dataInStore = messagesStore.getState();
+
+      if (dataInStore.length === undefined) {
+        render(res);
+      }
+      messagesStore.dispatch(messageAction(res));
+
+      const dataInStoreUpdated = messagesStore.getState();
+
+      const statement = Object.values(res).length !== dataInStore.length;
+      if (statement) {
+        render(dataInStoreUpdated);
+      } else {
+        console.log("keep calm, no rerendering");
+      }
+
+      const idStock = dataInStore.map((el) => ({
+        update_id: el.update_id,
+        id: el.message.id,
+      }));
+    });
+  }, 2000);
 }

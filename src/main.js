@@ -4,6 +4,6 @@ import MenuView from "./components/MenuView.js";
 
 const MAIN = document.querySelector(".main");
 
-AuthView(MAIN);
-MenuView(MAIN);
+// AuthView(MAIN);
+// MenuView(MAIN);
 MessagesView(MAIN);
