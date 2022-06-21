@@ -39,25 +39,18 @@ export default function MessagesView(MAIN) {
   setInterval(() => {
     getUpdate(url).then((res) => {
       const dataInStore = messagesStore.getState();
-
       if (dataInStore.length === undefined) {
         render(res);
       }
       messagesStore.dispatch(messageAction(res));
-
       const dataInStoreUpdated = messagesStore.getState();
 
-      const statement = Object.values(res).length !== dataInStore.length;
+      const statement = res.length !== dataInStore.length;
       if (statement) {
         render(dataInStoreUpdated);
       } else {
         console.log("keep calm, no rerendering");
       }
-
-      const idStock = dataInStore.map((el) => ({
-        update_id: el.update_id,
-        id: el.message.id,
-      }));
     });
   }, 2000);
 }
