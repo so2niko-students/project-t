@@ -1,8 +1,6 @@
 import { logIn } from "../actions/auth_actions.js";
 import { authStore } from "../stores/auth_store.js";
 
-// View of authorization
-
 export default function AuthView(container) {
   if (localStorage.getItem("token")) {
     authStore.dispatch(logIn({ token: localStorage.getItem("token") }));

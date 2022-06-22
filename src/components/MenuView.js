@@ -1,7 +1,6 @@
 import { logOut } from '../actions/auth_actions.js';
 import { authStore } from '../stores/auth_store.js';
 
-// View of authorization
 export default function MenuView(container) {
   const eventListeners = [
     {

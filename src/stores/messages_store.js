@@ -8,13 +8,7 @@ const initState = {
 const messagesReducer = (state = initState, action) => {
   switch (action.type) {
     case "update_message":
-      return (state = [
-        {
-          time: action.payload.time,
-          userName: action.payload.userName,
-          text: action.payload.text,
-        },
-      ]);
+      return action.payload;
     default:
       return state;
   }
