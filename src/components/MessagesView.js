@@ -39,9 +39,9 @@ export default function MessagesView(MAIN) {
   setInterval(() => {
     getUpdate(url).then((res) => {
       const dataInStore = messagesStore.getState();
-      if (dataInStore.length === undefined) {
-        render(res);
-      }
+//       if (dataInStore.length === undefined) {
+//         render(res);
+//       }
       messagesStore.dispatch(messageAction(res));
       const dataInStoreUpdated = messagesStore.getState();
 
